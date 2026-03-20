@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Service Department | Honda of Oakland</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --honda-red: #CC0000;
+      --honda-dark: #1a1a1a;
+      --honda-gray: #f5f5f5;
+      --honda-mid: #555;
+      --honda-border: #e0e0e0;
+    }
+
+    body { font-family: 'Helvetica Neue', Arial, sans-serif; color: var(--honda-dark); line-height: 1.6; }
+
+    /* ── TOP BAR ── */
+    .topbar {
+      background: var(--honda-dark);
+      color: #ccc;
+      font-size: 12px;
+      padding: 6px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .topbar a { color: #ccc; text-decoration: none; margin-left: 16px; }
+    .topbar a:hover { color: #fff; }
+
+    /* ── HEADER ── */
+    header {
+      background: #fff;
+      border-bottom: 3px solid var(--honda-red);
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo-h {
+      width: 42px; height: 42px;
+      background: var(--honda-red);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 22px; font-weight: 900; font-style: italic;
+    }
+    .logo-text { font-size: 20px; font-weight: 700; color: var(--honda-dark); line-height: 1.1; }
+    .logo-text span { display: block; font-size: 11px; font-weight: 400; color: var(--honda-mid); letter-spacing: 1px; text-transform: uppercase; }
+
+    nav { display: flex; gap: 28px; }
+    nav a { text-decoration: none; color: var(--honda-dark); font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; padding: 4px 0; border-bottom: 2px solid transparent; transition: border-color 0.2s; }
+    nav a:hover, nav a.active { border-bottom-color: var(--honda-red); color: var(--honda-red); }
+
+    .header-cta { background: var(--honda-red); color: #fff; padding: 10px 20px; border-radius: 4px; text-decoration: none; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    .header-cta:hover { background: #a80000; }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+      color: #fff;
+      padding: 70px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"><rect width="60" height="60" fill="none"/><path d="M0 60L60 0" stroke="%23CC0000" stroke-width="0.5" opacity="0.15"/></svg>');
+      background-size: 60px 60px;
+    }
+    .hero-inner { max-width: 1100px; margin: 0 auto; position: relative; }
+    .hero-badge { background: var(--honda-red); color: #fff; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; padding: 4px 12px; border-radius: 2px; display: inline-block; margin-bottom: 16px; }
+    .hero h1 { font-size: 48px; font-weight: 900; line-height: 1.1; margin-bottom: 16px; }
+    .hero h1 span { color: var(--honda-red); }
+    .hero p { font-size: 18px; color: #ccc; max-width: 560px; margin-bottom: 32px; }
+    .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+    .btn-primary { background: var(--honda-red); color: #fff; padding: 14px 28px; border-radius: 4px; text-decoration: none; font-weight: 700; font-size: 15px; text-transform: uppercase; letter-spacing: 0.5px; transition: background 0.2s; }
+    .btn-primary:hover { background: #a80000; }
+    .btn-outline { border: 2px solid #fff; color: #fff; padding: 12px 28px; border-radius: 4px; text-decoration: none; font-weight: 700; font-size: 15px; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s; }
+    .btn-outline:hover { background: #fff; color: var(--honda-dark); }
+
+    .hero-stats { display: flex; gap: 40px; margin-top: 50px; padding-top: 40px; border-top: 1px solid #333; }
+    .stat { text-align: center; }
+    .stat-num { font-size: 36px; font-weight: 900; color: var(--honda-red); }
+    .stat-label { font-size: 12px; color: #999; text-transform: uppercase; letter-spacing: 1px; }
+
+    /* ── SECTIONS ── */
+    section { padding: 70px 40px; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-tag { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--honda-red); margin-bottom: 8px; }
+    .section-title { font-size: 36px; font-weight: 900; margin-bottom: 12px; }
+    .section-sub { font-size: 16px; color: var(--honda-mid); max-width: 600px; margin-bottom: 48px; }
+
+    /* ── SERVICES GRID ── */
+    .services { background: var(--honda-gray); }
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .service-card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 32px 28px;
+      border: 1px solid var(--honda-border);
+      transition: box-shadow 0.2s, transform 0.2s;
+      cursor: pointer;
+    }
+    .service-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.1); transform: translateY(-4px); }
+    .service-icon { width: 52px; height: 52px; background: #fff0f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 16px; }
+    .service-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .service-card p { font-size: 14px; color: var(--honda-mid); margin-bottom: 16px; line-height: 1.5; }
+    .service-link { color: var(--honda-red); font-size: 13px; font-weight: 700; text-decoration: none; text-transform: uppercase; letter-spacing: 0.5px; }
+    .service-link:hover { text-decoration: underline; }
+
+    /* ── SPECIALS ── */
+    .specials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .special-card {
+      border: 1px solid var(--honda-border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .special-head { background: var(--honda-red); color: #fff; padding: 20px 24px; }
+    .special-head .price { font-size: 42px; font-weight: 900; line-height: 1; }
+    .special-head .price sup { font-size: 20px; vertical-align: top; margin-top: 8px; display: inline-block; }
+    .special-head h3 { font-size: 16px; font-weight: 700; margin-top: 4px; }
+    .special-body { padding: 20px 24px; background: #fff; }
+    .special-body ul { list-style: none; }
+    .special-body ul li { font-size: 13px; color: var(--honda-mid); padding: 4px 0; padding-left: 18px; position: relative; }
+    .special-body ul li::before { content: '✓'; color: var(--honda-red); position: absolute; left: 0; font-weight: 700; }
+    .special-foot { padding: 0 24px 20px; background: #fff; }
+    .special-foot a { display: block; text-align: center; background: var(--honda-dark); color: #fff; padding: 10px; border-radius: 4px; text-decoration: none; font-size: 13px; font-weight: 700; text-transform: uppercase; }
+    .special-foot a:hover { background: var(--honda-red); }
+
+    /* ── SCHEDULE ── */
+    .schedule { background: var(--honda-red); color: #fff; }
+    .schedule .section-tag { color: rgba(255,255,255,0.7); }
+    .schedule .section-title { color: #fff; }
+    .schedule .section-sub { color: rgba(255,255,255,0.8); }
+    .schedule-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+    .schedule-form { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 32px; backdrop-filter: blur(4px); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: rgba(255,255,255,0.8); }
+    .form-group input, .form-group select { padding: 10px 14px; border-radius: 4px; border: none; font-size: 14px; background: rgba(255,255,255,0.95); color: var(--honda-dark); }
+    .form-group input:focus, .form-group select:focus { outline: 2px solid #fff; }
+    .btn-white { background: #fff; color: var(--honda-red); padding: 14px 28px; border: none; border-radius: 4px; font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; width: 100%; margin-top: 8px; }
+    .btn-white:hover { background: #f0f0f0; }
+
+    .schedule-info { color: rgba(255,255,255,0.9); }
+    .schedule-info h3 { font-size: 22px; font-weight: 700; margin-bottom: 24px; color: #fff; }
+    .hours-table { width: 100%; border-collapse: collapse; margin-bottom: 32px; }
+    .hours-table td { padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 14px; }
+    .hours-table td:last-child { text-align: right; font-weight: 600; }
+    .contact-items { display: flex; flex-direction: column; gap: 12px; }
+    .contact-item { display: flex; align-items: center; gap: 12px; font-size: 14px; }
+    .contact-icon { font-size: 20px; width: 32px; }
+
+    /* ── WHY US ── */
+    .why { background: var(--honda-gray); }
+    .why-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+    .why-item { text-align: center; }
+    .why-icon { font-size: 42px; margin-bottom: 12px; }
+    .why-item h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .why-item p { font-size: 13px; color: var(--honda-mid); }
+
+    /* ── REVIEWS ── */
+    .reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .review-card { background: #fff; border: 1px solid var(--honda-border); border-radius: 8px; padding: 28px; }
+    .review-stars { color: #f5a623; font-size: 18px; margin-bottom: 12px; }
+    .review-text { font-size: 14px; color: var(--honda-mid); line-height: 1.6; margin-bottom: 16px; font-style: italic; }
+    .reviewer { font-size: 13px; font-weight: 700; }
+    .review-date { font-size: 12px; color: #999; }
+    .reviews-rating { display: flex; align-items: center; gap: 16px; margin-bottom: 40px; }
+    .big-rating { font-size: 64px; font-weight: 900; color: var(--honda-dark); line-height: 1; }
+    .rating-details { }
+    .rating-details .stars { color: #f5a623; font-size: 24px; }
+    .rating-details p { font-size: 14px; color: var(--honda-mid); }
+
+    /* ── FAQ ── */
+    .faq { background: var(--honda-gray); }
+    .faq-list { display: flex; flex-direction: column; gap: 0; max-width: 800px; }
+    .faq-item { border-bottom: 1px solid var(--honda-border); }
+    .faq-q { width: 100%; background: none; border: none; text-align: left; padding: 20px 0; font-size: 16px; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: var(--honda-dark); }
+    .faq-q:hover { color: var(--honda-red); }
+    .faq-q .arrow { font-size: 20px; transition: transform 0.2s; color: var(--honda-red); }
+    .faq-a { font-size: 14px; color: var(--honda-mid); line-height: 1.7; padding-bottom: 20px; display: none; }
+    .faq-item.open .faq-a { display: block; }
+    .faq-item.open .arrow { transform: rotate(180deg); }
+
+    /* ── FOOTER ── */
+    footer { background: var(--honda-dark); color: #999; padding: 48px 40px 24px; }
+    .footer-inner { max-width: 1100px; margin: 0 auto; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+    .footer-brand { }
+    .footer-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .footer-logo-h { width: 36px; height: 36px; background: var(--honda-red); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 18px; font-weight: 900; font-style: italic; }
+    .footer-logo-text { color: #fff; font-size: 16px; font-weight: 700; }
+    .footer-brand p { font-size: 13px; line-height: 1.6; max-width: 240px; }
+    .footer-col h4 { color: #fff; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer-col ul li a { color: #999; text-decoration: none; font-size: 13px; }
+    .footer-col ul li a:hover { color: #fff; }
+    .footer-bottom { border-top: 1px solid #333; padding-top: 24px; display: flex; justify-content: space-between; font-size: 12px; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .services-grid, .specials-grid, .reviews-grid { grid-template-columns: 1fr 1fr; }
+      .why-grid { grid-template-columns: 1fr 1fr; }
+      .schedule-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      nav { display: none; }
+      .hero h1 { font-size: 32px; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .services-grid, .specials-grid, .reviews-grid, .why-grid { grid-template-columns: 1fr; }
+      header { padding: 0 20px; }
+      section { padding: 48px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div>📍 3961 Broadway, Oakland, CA 94611</div>
+  <div>
+    <a href="#">Mon–Fri: 7am–6pm</a>
+    <a href="tel:+15104445100">📞 (510) 444-5100</a>
+    <a href="#">Directions</a>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <a href="#" class="logo">
+    <div class="logo-h">H</div>
+    <div class="logo-text">Honda of Oakland<span>Certified Honda Dealer</span></div>
+  </a>
+  <nav>
+    <a href="#">New Cars</a>
+    <a href="#">Used Cars</a>
+    <a href="#" class="active">Service</a>
+    <a href="#">Parts</a>
+    <a href="#">Financing</a>
+    <a href="#">About</a>
+  </nav>
+  <a href="#schedule" class="header-cta">Schedule Service</a>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">Certified Honda Service</div>
+    <h1>Expert Service,<br><span>Every Visit.</span></h1>
+    <p>Honda-trained technicians, genuine OEM parts, and state-of-the-art equipment — keeping your Honda running like new.</p>
+    <div class="hero-btns">
+      <a href="#schedule" class="btn-primary">Schedule Service</a>
+      <a href="#specials" class="btn-outline">View Service Specials</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">30+</div><div class="stat-label">Years Serving Oakland</div></div>
+      <div class="stat"><div class="stat-num">50K+</div><div class="stat-label">Vehicles Serviced</div></div>
+      <div class="stat"><div class="stat-num">4.8★</div><div class="stat-label">Google Rating</div></div>
+      <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Genuine Honda Parts</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="section-inner">
+    <div class="section-tag">What We Offer</div>
+    <h2 class="section-title">Complete Honda Service</h2>
+    <p class="section-sub">From routine maintenance to complex repairs, our certified technicians handle it all with precision and care.</p>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">🛢️</div>
+        <h3>Oil Change & Filter</h3>
+        <p>Conventional, synthetic blend, or full synthetic oil changes with multi-point inspection. Protects your engine and extends vehicle life.</p>
+        <a href="#schedule" class="service-link">Schedule Now →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🔄</div>
+        <h3>Tire Rotation & Balance</h3>
+        <p>Regular tire rotation extends tread life and ensures even wear. We'll also check tire pressure and inspect for damage.</p>
+        <a href="#schedule" class="service-link">Schedule Now →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🛑</div>
+        <h3>Brake Service</h3>
+        <p>Complete brake inspection, pad replacement, rotor resurfacing or replacement. Your safety is our priority.</p>
+        <a href="#schedule" class="service-link">Schedule Now →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🔋</div>
+        <h3>Battery Testing & Replacement</h3>
+        <p>Free battery testing with any service. Genuine Honda batteries with 2-year free replacement warranty.</p>
+        <a href="#schedule" class="service-link">Schedule Now →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">❄️</div>
+        <h3>A/C & Heating</h3>
+        <p>A/C recharge, refrigerant leak detection, heater core service — stay comfortable year-round in the Bay Area.</p>
+        <a href="#schedule" class="service-link">Schedule Now →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🔧</div>
+        <h3>Multi-Point Inspection</h3>
+        <p>Comprehensive 27-point vehicle inspection with every service visit. We'll flag any concerns before they become costly repairs.</p>
+        <a href="#schedule" class="service-link">Schedule Now →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">⚙️</div>
+        <h3>Transmission Service</h3>
+        <p>Fluid flush, filter replacement, and full diagnostics for automatic and manual transmissions. Keep your drivetrain healthy.</p>
+        <a href="#schedule" class="service-link">Schedule Now →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🚗</div>
+        <h3>Engine Diagnostics</h3>
+        <p>Check engine light? Our advanced diagnostic equipment reads Honda-specific codes and pinpoints the root cause fast.</p>
+        <a href="#schedule" class="service-link">Schedule Now →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">💧</div>
+        <h3>Fluid Services</h3>
+        <p>Coolant flush, power steering fluid, brake fluid, and differential fluid — all using Honda-approved fluids.</p>
+        <a href="#schedule" class="service-link">Schedule Now →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SPECIALS -->
+<section id="specials">
+  <div class="section-inner">
+    <div class="section-tag">Limited Time</div>
+    <h2 class="section-title">Service Specials</h2>
+    <p class="section-sub">Save on the services your Honda needs most. Print or show coupon on your phone.</p>
+    <div class="specials-grid">
+      <div class="special-card">
+        <div class="special-head">
+          <div class="price"><sup>$</sup>49<sup>.95</sup></div>
+          <h3>Synthetic Oil Change</h3>
+        </div>
+        <div class="special-body">
+          <ul>
+            <li>Up to 5 quarts full synthetic oil</li>
+            <li>New Honda oil filter</li>
+            <li>27-point inspection</li>
+            <li>Tire pressure check</li>
+            <li>Fluid top-off</li>
+          </ul>
+        </div>
+        <div class="special-foot"><a href="#schedule">Claim This Offer</a></div>
+      </div>
+      <div class="special-card">
+        <div class="special-head">
+          <div class="price"><sup>$</sup>79<sup>.95</sup></div>
+          <h3>Brake Pad Replacement</h3>
+        </div>
+        <div class="special-body">
+          <ul>
+            <li>Front or rear brake pads</li>
+            <li>Genuine Honda OEM pads</li>
+            <li>Brake system inspection</li>
+            <li>Rotor measurement</li>
+            <li>12-month warranty</li>
+          </ul>
+        </div>
+        <div class="special-foot"><a href="#schedule">Claim This Offer</a></div>
+      </div>
+      <div class="special-card">
+        <div class="special-head">
+          <div class="price"><sup>$</sup>19<sup>.95</sup></div>
+          <h3>Tire Rotation</h3>
+        </div>
+        <div class="special-body">
+          <ul>
+            <li>4-tire rotation</li>
+            <li>Tire pressure adjustment</li>
+            <li>Tread depth check</li>
+            <li>Wheel torque check</li>
+            <li>Visual brake inspection</li>
+          </ul>
+        </div>
+        <div class="special-foot"><a href="#schedule">Claim This Offer</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCHEDULE -->
+<section class="schedule" id="schedule">
+  <div class="section-inner">
+    <div class="section-tag">Book Online</div>
+    <h2 class="section-title">Schedule Your Service</h2>
+    <p class="section-sub">Appointments available 7 days a week. Online scheduling is fast and easy — or call us anytime.</p>
+    <div class="schedule-grid">
+      <div class="schedule-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" placeholder="John" />
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" placeholder="Smith" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Phone</label>
+            <input type="tel" placeholder="(510) 555-0100" />
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" placeholder="john@email.com" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Vehicle Year</label>
+            <select>
+              <option>2024</option><option>2023</option><option>2022</option>
+              <option>2021</option><option>2020</option><option>2019</option>
+              <option>2018 or older</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Model</label>
+            <select>
+              <option>Accord</option><option>Civic</option><option>CR-V</option>
+              <option>HR-V</option><option>Pilot</option><option>Odyssey</option>
+              <option>Ridgeline</option><option>Passport</option><option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:16px">
+          <label>Service Needed</label>
+          <select>
+            <option>Oil Change</option><option>Tire Rotation</option><option>Brake Service</option>
+            <option>Battery</option><option>Multi-Point Inspection</option>
+            <option>A/C Service</option><option>Engine Diagnostics</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Preferred Date</label>
+            <input type="date" />
+          </div>
+          <div class="form-group">
+            <label>Preferred Time</label>
+            <select>
+              <option>7:00 AM</option><option>8:00 AM</option><option>9:00 AM</option>
+              <option>10:00 AM</option><option>11:00 AM</option><option>12:00 PM</option>
+              <option>1:00 PM</option><option>2:00 PM</option><option>3:00 PM</option>
+              <option>4:00 PM</option><option>5:00 PM</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-white" onclick="alert('Appointment request submitted! We will confirm via email or phone within 1 hour.')">Request Appointment</button>
+      </div>
+      <div class="schedule-info">
+        <h3>Service Hours & Contact</h3>
+        <table class="hours-table">
+          <tr><td>Monday – Friday</td><td>7:00 AM – 6:00 PM</td></tr>
+          <tr><td>Saturday</td><td>8:00 AM – 5:00 PM</td></tr>
+          <tr><td>Sunday</td><td>Closed</td></tr>
+        </table>
+        <div class="contact-items">
+          <div class="contact-item"><span class="contact-icon">📞</span><div><strong style="color:#fff">(510) 444-5100</strong><br>Service Department Direct Line</div></div>
+          <div class="contact-item"><span class="contact-icon">📍</span><div>3961 Broadway<br>Oakland, CA 94611</div></div>
+          <div class="contact-item"><span class="contact-icon">🚌</span><div>Free shuttle service available<br>within 5 miles of dealership</div></div>
+          <div class="contact-item"><span class="contact-icon">🚗</span><div>Loaner vehicles available<br>for extended service (by reservation)</div></div>
+          <div class="contact-item"><span class="contact-icon">💬</span><div>Questions? Chat with our AI assistant<br>available 24/7 in the corner below →</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="why">
+  <div class="section-inner">
+    <div class="section-tag">Why Honda of Oakland</div>
+    <h2 class="section-title">The Honda of Oakland Difference</h2>
+    <p class="section-sub">We're not just any service center — we're Honda specialists who care about your ownership experience.</p>
+    <div class="why-grid">
+      <div class="why-item">
+        <div class="why-icon">🏆</div>
+        <h3>Honda Certified Technicians</h3>
+        <p>All technicians are factory-trained and certified specifically for Honda vehicles.</p>
+      </div>
+      <div class="why-item">
+        <div class="why-icon">🔩</div>
+        <h3>Genuine OEM Parts</h3>
+        <p>We only use authentic Honda parts — never aftermarket substitutes — for perfect fit and performance.</p>
+      </div>
+      <div class="why-item">
+        <div class="why-icon">⏱️</div>
+        <h3>Express Service Lane</h3>
+        <p>Oil changes and routine maintenance done in 45 minutes or less — no appointment necessary.</p>
+      </div>
+      <div class="why-item">
+        <div class="why-icon">📱</div>
+        <h3>Digital Vehicle Inspection</h3>
+        <p>Receive photos and videos of your vehicle's inspection directly to your phone in real time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="section-inner">
+    <div class="section-tag">Customer Reviews</div>
+    <h2 class="section-title">What Our Customers Say</h2>
+    <div class="reviews-rating">
+      <div class="big-rating">4.8</div>
+      <div class="rating-details">
+        <div class="stars">★★★★★</div>
+        <p>Based on 2,400+ Google reviews</p>
+      </div>
+    </div>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"The service team at Honda of Oakland is outstanding. They were transparent about what my car needed, showed me the inspection photos right on my phone, and had my Civic ready ahead of schedule. Will never go anywhere else."</p>
+        <div class="reviewer">Marcus T.</div>
+        <div class="review-date">Oakland, CA · 2 weeks ago</div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Came in for a brake issue that another shop couldn't figure out. Honda of Oakland diagnosed it in 20 minutes and fixed it the same day. The service advisor kept me updated throughout. Incredibly professional."</p>
+        <div class="reviewer">Jennifer L.</div>
+        <div class="review-date">Berkeley, CA · 1 month ago</div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"I've been bringing my Accord here for 8 years. The consistency is unmatched — every technician knows their stuff, every service advisor is honest, and the loaner vehicle program is a lifesaver. Highly recommend."</p>
+        <div class="reviewer">David K.</div>
+        <div class="review-date">Alameda, CA · 3 weeks ago</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="section-inner">
+    <div class="section-tag">FAQ</div>
+    <h2 class="section-title">Frequently Asked Questions</h2>
+    <p class="section-sub">Can't find your answer? Our AI assistant is available 24/7 — just click the chat button.</p>
+    <div class="faq-list">
+      <div class="faq-item open">
+        <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">Do I need an appointment for an oil change? <span class="arrow">▼</span></button>
+        <div class="faq-a">No appointment is needed for our Express Service Lane. Simply drive in Monday through Saturday during service hours and we'll have you out in 45 minutes or less. For other services, we recommend scheduling in advance.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">How long does a typical service visit take? <span class="arrow">▼</span></button>
+        <div class="faq-a">Express services (oil change, tire rotation) take 30–45 minutes. More involved services like brake jobs or diagnostics typically take 1.5–3 hours. We'll give you an accurate time estimate when you drop off your vehicle.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">Do you offer loaner vehicles? <span class="arrow">▼</span></button>
+        <div class="faq-a">Yes! Loaner vehicles are available for services expected to take longer than 3 hours, subject to availability. Please request a loaner when scheduling your appointment so we can ensure one is ready for you.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">What's included in the multi-point inspection? <span class="arrow">▼</span></button>
+        <div class="faq-a">Our 27-point inspection covers: engine oil level and condition, all fluid levels, brake pad and rotor measurement, tire tread depth and pressure, battery health, belts and hoses, lights, wiper blades, steering and suspension, and more. You'll receive a digital report with photos.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">Are your parts covered by warranty? <span class="arrow">▼</span></button>
+        <div class="faq-a">Yes. All genuine Honda parts come with a 12-month/12,000-mile parts and labor warranty. If any covered part fails within the warranty period, we'll replace it at no charge.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">Can I use service coupons or specials? <span class="arrow">▼</span></button>
+        <div class="faq-a">Absolutely. You can show the coupon on your phone or print it out and present it when you drop off your vehicle. Coupons cannot be combined with other offers. Check our Service Specials section above for current deals.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="footer-logo-h">H</div>
+          <div class="footer-logo-text">Honda of Oakland</div>
+        </div>
+        <p>Serving Oakland, Berkeley, Alameda, and the greater East Bay since 1993. We're committed to an exceptional ownership experience.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Service</h4>
+        <ul>
+          <li><a href="#">Oil Change</a></li>
+          <li><a href="#">Brake Service</a></li>
+          <li><a href="#">Tire Rotation</a></li>
+          <li><a href="#">Diagnostics</a></li>
+          <li><a href="#">Service Specials</a></li>
+          <li><a href="#schedule">Schedule Service</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Dealership</h4>
+        <ul>
+          <li><a href="#">New Honda Inventory</a></li>
+          <li><a href="#">Used Cars</a></li>
+          <li><a href="#">Honda Financing</a></li>
+          <li><a href="#">Parts Department</a></li>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="tel:+15104445100">(510) 444-5100</a></li>
+          <li><a href="#">3961 Broadway</a></li>
+          <li><a href="#">Oakland, CA 94611</a></li>
+          <li><a href="#">Get Directions</a></li>
+          <li><a href="#">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Honda of Oakland. All rights reserved.</span>
+      <span><a href="#" style="color:#999;text-decoration:none">Privacy Policy</a> · <a href="#" style="color:#999;text-decoration:none">Terms of Use</a> · <a href="#" style="color:#999;text-decoration:none">Sitemap</a></span>
+    </div>
+  </div>
+</footer>
+
+<!-- ── SOLVEA CHATBOT ── -->
+<script>
+  !(function(){
+    const sc = document.createElement('script');
+    sc.src = "https://app.solvea.cx/api_v2/gpt/bots/livechat/embed.js?pid=702&token=22c21fb0eb33494dad3686ac479d9a35";
+    sc.async = true;
+    sc.defer = true;
+    document.body.appendChild(sc);
+  })()
+</script>
+
+</body>
+</html>
