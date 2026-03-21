@@ -4,6 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Service Department | Honda of Oakland</title>
+  <!-- ── Favicon ── -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%23CC0000'/><text y='.9em' font-size='80' x='10'>H</text></svg>">
+  <!-- ── Open Graph ── -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Honda of Oakland — AI-Powered Service Department" />
+  <meta property="og:description" content="Schedule service, get instant answers, and experience our AI voice agent. Available 24/7. Call +1 (888) 888-8888." />
+  <meta property="og:url" content="https://mguozhen.github.io/honda-demo/" />
+  <meta property="og:image" content="https://mguozhen.github.io/honda-demo/og-honda.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Honda of Oakland — AI Voice Agent Demo" />
+  <meta name="twitter:description" content="Talk to our AI voice agent 24/7. No hold music. No menus. Powered by Solvea." />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -221,6 +232,21 @@
       .services-grid, .specials-grid, .reviews-grid, .why-grid { grid-template-columns: 1fr; }
       header { padding: 0 20px; }
       section { padding: 48px 20px; }
+    }
+
+    /* ── VOICE AGENT BAND — mobile ── */
+    @media (max-width: 600px) {
+      .voice-band { padding: 48px 20px !important; }
+      .voice-band h2 { font-size: 26px !important; }
+      .voice-band p { font-size: 14px !important; }
+      .voice-band .tel-link { font-size: 20px !important; padding: 14px 24px !important; gap: 10px !important; }
+      .voice-band .benefits { gap: 16px !important; }
+      .voice-band .benefits div { font-size: 12px !important; }
+    }
+    /* ── FLOATING CALL BUTTON — mobile ── */
+    @media (max-width: 600px) {
+      #call-float .float-label { display: none; }
+      #call-float { padding: 14px 16px !important; border-radius: 50% !important; bottom: 88px !important; }
     }
   </style>
 </head>
@@ -639,16 +665,16 @@
 </footer>
 
 <!-- ── VOICE AGENT BAND ── -->
-<section style="background:linear-gradient(135deg,#CC0000 0%,#1a1a1a 100%);padding:60px 40px;text-align:center;color:#fff">
+<section class="voice-band" style="background:linear-gradient(135deg,#CC0000 0%,#1a1a1a 100%);padding:60px 40px;text-align:center;color:#fff">
   <div style="max-width:700px;margin:0 auto">
     <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,0.65);margin-bottom:14px">🎙️ New — AI Voice Agent</div>
     <h2 style="font-size:38px;font-weight:900;margin-bottom:14px">Talk to Us Instantly.<br>AI-Powered, 24/7.</h2>
     <p style="font-size:17px;color:rgba(255,255,255,0.8);margin-bottom:12px">Skip the hold music. Our AI voice agent can schedule your service appointment, answer questions about your vehicle, and check service status — instantly.</p>
     <p style="font-size:14px;color:rgba(255,255,255,0.5);margin-bottom:36px">Speak naturally — just like talking to a service advisor, anytime day or night.</p>
-    <a href="tel:+1888888888" style="display:inline-flex;align-items:center;gap:14px;background:#fff;color:#CC0000;padding:18px 40px;border-radius:50px;text-decoration:none;font-size:28px;font-weight:900;letter-spacing:1px;box-shadow:0 8px 32px rgba(0,0,0,0.25);transition:transform 0.2s" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">
+    <a href="tel:+1888888888" class="tel-link" onclick="trackCall('voice-band')" style="display:inline-flex;align-items:center;gap:14px;background:#fff;color:#CC0000;padding:18px 40px;border-radius:50px;text-decoration:none;font-size:28px;font-weight:900;letter-spacing:1px;box-shadow:0 8px 32px rgba(0,0,0,0.25);transition:transform 0.2s" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">
       📞 <span>+1 (888) 888-8888</span>
     </a>
-    <div style="margin-top:28px;display:flex;gap:32px;justify-content:center;flex-wrap:wrap">
+    <div class="benefits" style="margin-top:28px;display:flex;gap:32px;justify-content:center;flex-wrap:wrap">
       <div style="font-size:14px;color:rgba(255,255,255,0.7)">✅ Schedule appointments by voice</div>
       <div style="font-size:14px;color:rgba(255,255,255,0.7)">✅ Check service status</div>
       <div style="font-size:14px;color:rgba(255,255,255,0.7)">✅ No hold time</div>
@@ -658,9 +684,9 @@
 </section>
 
 <!-- ── FLOATING CALL BUTTON ── -->
-<a href="tel:+1888888888" id="call-float" style="position:fixed;bottom:100px;right:24px;z-index:9999;background:linear-gradient(135deg,#CC0000,#8b0000);color:#fff;padding:14px 20px;border-radius:50px;text-decoration:none;font-size:14px;font-weight:700;box-shadow:0 4px 20px rgba(0,0,0,0.3);display:flex;align-items:center;gap:8px;animation:pulse-call 2s infinite">
+<a href="tel:+1888888888" id="call-float" onclick="trackCall('float-btn')" style="position:fixed;bottom:100px;right:24px;z-index:9999;background:linear-gradient(135deg,#CC0000,#8b0000);color:#fff;padding:14px 20px;border-radius:50px;text-decoration:none;font-size:14px;font-weight:700;box-shadow:0 4px 20px rgba(0,0,0,0.3);display:flex;align-items:center;gap:8px;animation:pulse-call 2s infinite">
   <span style="font-size:20px">📞</span>
-  <span>Try Voice Agent</span>
+  <span class="float-label">Try Voice Agent</span>
 </a>
 <style>
 @keyframes pulse-call {
@@ -668,6 +694,18 @@
   50% { box-shadow: 0 4px 32px rgba(204,0,0,0.8), 0 0 0 8px rgba(204,0,0,0.15); }
 }
 </style>
+<script>
+function trackCall(source) {
+  // Call click tracking — replace with real analytics when available
+  const entry = { ts: new Date().toISOString(), source, site: 'honda-demo', phone: '+1888888888' };
+  try {
+    const log = JSON.parse(localStorage.getItem('solvea_call_log') || '[]');
+    log.push(entry);
+    localStorage.setItem('solvea_call_log', JSON.stringify(log.slice(-50)));
+  } catch(e) {}
+  console.log('[Solvea] Call click:', entry);
+}
+</script>
 
 <!-- ── SOLVEA CHATBOT ── -->
 <script>
