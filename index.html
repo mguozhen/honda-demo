@@ -683,17 +683,95 @@
   </div>
 </section>
 
-<!-- ── FLOATING CALL BUTTON ── -->
-<a href="tel:+1888888888" id="call-float" onclick="trackCall('float-btn')" style="position:fixed;bottom:100px;right:24px;z-index:9999;background:linear-gradient(135deg,#CC0000,#8b0000);color:#fff;padding:14px 20px;border-radius:50px;text-decoration:none;font-size:14px;font-weight:700;box-shadow:0 4px 20px rgba(0,0,0,0.3);display:flex;align-items:center;gap:8px;animation:pulse-call 2s infinite">
-  <span style="font-size:20px">📞</span>
-  <span class="float-label">Try Voice Agent</span>
-</a>
+<!-- ── FLOATING CALL BUTTON (top-right) ── -->
 <style>
 @keyframes pulse-call {
-  0%,100% { box-shadow: 0 4px 20px rgba(204,0,0,0.4); }
-  50% { box-shadow: 0 4px 32px rgba(204,0,0,0.8), 0 0 0 8px rgba(204,0,0,0.15); }
+  0%,100% { box-shadow: 0 4px 20px rgba(204,0,0,0.5); transform:scale(1); }
+  50%     { box-shadow: 0 4px 36px rgba(204,0,0,0.9), 0 0 0 10px rgba(204,0,0,0.12); transform:scale(1.04); }
+}
+@keyframes call-attention {
+  0%   { transform:rotate(0deg); }
+  10%  { transform:rotate(-12deg); }
+  20%  { transform:rotate(12deg); }
+  30%  { transform:rotate(-10deg); }
+  40%  { transform:rotate(10deg); }
+  50%  { transform:rotate(0deg); }
+  100% { transform:rotate(0deg); }
+}
+#call-float {
+  position:fixed;
+  top:90px;
+  right:20px;
+  z-index:9999;
+  background:linear-gradient(135deg,#CC0000,#8b0000);
+  color:#fff;
+  padding:12px 20px;
+  border-radius:50px;
+  text-decoration:none;
+  font-size:14px;
+  font-weight:700;
+  box-shadow:0 4px 20px rgba(0,0,0,0.3);
+  display:flex;
+  align-items:center;
+  gap:8px;
+  animation:pulse-call 2s ease-in-out infinite;
+}
+#call-float .call-icon {
+  font-size:20px;
+  display:inline-block;
+  animation: call-attention 3s ease-in-out 1s infinite;
+}
+/* tooltip that appears above button */
+#call-float-tip {
+  position:fixed;
+  top:56px;
+  right:20px;
+  z-index:9999;
+  background:#1a1a1a;
+  color:#fff;
+  font-size:11px;
+  font-weight:600;
+  padding:5px 11px;
+  border-radius:20px;
+  white-space:nowrap;
+  opacity:0;
+  transform:translateY(4px);
+  transition:opacity 0.3s, transform 0.3s;
+  pointer-events:none;
+}
+#call-float-tip::after {
+  content:'';
+  position:absolute;
+  top:100%; left:50%;
+  transform:translateX(-50%);
+  border:5px solid transparent;
+  border-top-color:#1a1a1a;
+}
+#call-float:hover + #call-float-tip,
+#call-float-tip.show {
+  opacity:1;
+  transform:translateY(0);
+}
+@media (max-width:600px) {
+  #call-float { top:auto; bottom:16px; right:16px; padding:12px 14px; border-radius:50%; }
+  #call-float .float-label { display:none; }
+  #call-float-tip { top:auto; bottom:72px; }
 }
 </style>
+
+<a href="tel:+1888888888" id="call-float" onclick="trackCall('float-btn')">
+  <span class="call-icon">📞</span>
+  <span class="float-label">Try Voice Agent</span>
+</a>
+<div id="call-float-tip">🎙️ AI answers instantly — 24/7</div>
+
+<script>
+// Show tooltip after 5s to draw attention
+setTimeout(function(){
+  var tip = document.getElementById('call-float-tip');
+  if(tip){ tip.classList.add('show'); setTimeout(function(){ tip.classList.remove('show'); }, 4000); }
+}, 5000);
+</script>
 <script>
 function trackCall(source) {
   // Call click tracking — replace with real analytics when available
@@ -708,138 +786,165 @@ function trackCall(source) {
 </script>
 
 <!-- ── CHATBOT ATTENTION GRABBER ── -->
-<div id="chat-nudge" style="
+<style>
+@keyframes solvea-ping {
+  0%   { transform:scale(1);   opacity:1; }
+  70%  { transform:scale(2.2); opacity:0; }
+  100% { transform:scale(2.2); opacity:0; }
+}
+@keyframes solvea-bounce {
+  0%,20%,50%,80%,100% { transform:translateY(0); }
+  40% { transform:translateY(-10px); }
+  60% { transform:translateY(-5px); }
+}
+@keyframes solvea-fadein {
+  from { opacity:0; transform:translateY(20px) scale(0.9); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
+}
+@keyframes solvea-arrow {
+  0%,100% { transform:translateX(0); }
+  50%     { transform:translateX(6px); }
+}
+
+#solvea-nudge-wrap {
   position:fixed;
-  bottom:28px;
-  right:90px;
-  z-index:10000;
+  bottom:80px;
+  right:16px;
+  z-index:2147483647;
+  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  display:none;
+}
+#solvea-nudge-wrap.show {
+  display:block;
+  animation: solvea-fadein 0.4s ease forwards;
+}
+#solvea-bubble {
+  background:#fff;
+  border-radius:16px 16px 4px 16px;
+  padding:14px 16px 14px 16px;
+  box-shadow:0 8px 40px rgba(0,0,0,0.22), 0 0 0 2px #CC0000;
+  max-width:230px;
+  font-size:13.5px;
+  line-height:1.45;
+  color:#1a1a1a;
+  cursor:pointer;
+  position:relative;
+  animation: solvea-bounce 1.8s ease 0.5s 2;
+}
+#solvea-bubble:hover { box-shadow:0 12px 48px rgba(0,0,0,0.28), 0 0 0 2px #CC0000; }
+#solvea-label {
+  font-size:10px;
+  font-weight:800;
+  color:#CC0000;
+  text-transform:uppercase;
+  letter-spacing:1.2px;
+  margin-bottom:6px;
   display:flex;
-  align-items:flex-end;
-  gap:10px;
-  opacity:0;
-  transform:translateY(16px);
-  transition:opacity 0.5s ease, transform 0.5s ease;
+  align-items:center;
+  gap:5px;
+}
+#solvea-cta-arrow {
+  display:inline-block;
+  margin-top:8px;
+  font-size:12px;
+  font-weight:700;
+  color:#CC0000;
+  animation: solvea-arrow 1s ease-in-out infinite;
+}
+/* tail */
+#solvea-bubble::after {
+  content:'';
+  position:absolute;
+  bottom:-11px;
+  right:22px;
+  width:0; height:0;
+  border-left:11px solid transparent;
+  border-right:0 solid transparent;
+  border-top:12px solid #CC0000;
+}
+#solvea-close {
+  position:absolute;
+  top:-9px; right:-9px;
+  width:22px; height:22px;
+  background:#555; color:#fff;
+  border-radius:50%;
+  font-size:12px; line-height:22px; text-align:center;
+  cursor:pointer; font-weight:700;
+  box-shadow:0 2px 6px rgba(0,0,0,0.3);
+}
+#solvea-close:hover { background:#333; }
+
+/* pulsing rings */
+#solvea-ping1, #solvea-ping2 {
+  position:fixed;
+  bottom:16px; right:16px;
+  width:56px; height:56px;
+  border-radius:50%;
+  background: rgba(204,0,0,0.35);
+  z-index:2147483646;
+  display:none;
   pointer-events:none;
-">
-  <!-- speech bubble -->
-  <div id="chat-bubble" style="
-    background:#fff;
-    border-radius:18px 18px 4px 18px;
-    padding:14px 18px;
-    box-shadow:0 8px 32px rgba(0,0,0,0.18);
-    max-width:220px;
-    font-size:14px;
-    font-family:'Helvetica Neue',Arial,sans-serif;
-    line-height:1.4;
-    color:#1a1a1a;
-    cursor:pointer;
-    pointer-events:all;
-    border:2px solid #CC0000;
-    position:relative;
-  ">
-    <div style="font-size:11px;font-weight:700;color:#CC0000;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px">💬 AI Assistant</div>
-    👋 Hi! Need to schedule a service or have a quick question? I'm here 24/7 — just tap to chat!
-    <!-- tail -->
-    <div style="
-      position:absolute;
-      bottom:-12px;
-      right:16px;
-      width:0;height:0;
-      border-left:10px solid transparent;
-      border-right:0px solid transparent;
-      border-top:12px solid #CC0000;
-    "></div>
-    <!-- close btn -->
-    <div id="chat-nudge-close" style="
-      position:absolute;top:-8px;right:-8px;
-      width:20px;height:20px;
-      background:#888;color:#fff;
-      border-radius:50%;
-      font-size:11px;line-height:20px;text-align:center;
-      cursor:pointer;font-weight:700;
-    ">✕</div>
+}
+#solvea-ping1.show { display:block; animation: solvea-ping 1.6s ease-out infinite; }
+#solvea-ping2.show { display:block; animation: solvea-ping 1.6s ease-out 0.55s infinite; }
+</style>
+
+<!-- Two pulse rings -->
+<div id="solvea-ping1"></div>
+<div id="solvea-ping2"></div>
+
+<!-- Speech bubble -->
+<div id="solvea-nudge-wrap">
+  <div id="solvea-bubble">
+    <div id="solvea-label">💬 AI Chat Assistant</div>
+    👋 Hi! Schedule service, check wait times, or ask anything — I'm available 24/7!
+    <div id="solvea-cta-arrow">Tap to chat →</div>
+    <div id="solvea-close">✕</div>
   </div>
 </div>
 
-<!-- ping ring around chatbot button area -->
-<div id="chat-ping" style="
-  position:fixed;
-  bottom:14px;
-  right:14px;
-  width:62px;height:62px;
-  border-radius:50%;
-  border:3px solid #CC0000;
-  z-index:9998;
-  opacity:0;
-  pointer-events:none;
-  animation:none;
-"></div>
-
-<style>
-@keyframes chat-ping-ring {
-  0%   { transform:scale(1);   opacity:0.9; }
-  80%  { transform:scale(1.9); opacity:0; }
-  100% { transform:scale(1.9); opacity:0; }
-}
-@keyframes chat-bubble-bounce {
-  0%,100% { transform:translateY(0); }
-  40%      { transform:translateY(-6px); }
-}
-#chat-nudge.visible {
-  opacity:1 !important;
-  transform:translateY(0) !important;
-}
-#chat-nudge.visible #chat-bubble {
-  animation: chat-bubble-bounce 2.4s ease-in-out 1s 3;
-}
-#chat-ping.visible {
-  opacity:1 !important;
-  animation: chat-ping-ring 1.8s ease-out infinite !important;
-}
-</style>
-
 <script>
 (function(){
-  var nudge  = document.getElementById('chat-nudge');
-  var ping   = document.getElementById('chat-ping');
-  var closed = false;
+  var wrap  = document.getElementById('solvea-nudge-wrap');
+  var p1    = document.getElementById('solvea-ping1');
+  var p2    = document.getElementById('solvea-ping2');
+  var done  = false;
 
-  function showNudge(){
-    if(closed) return;
-    nudge.classList.add('visible');
-    ping.classList.add('visible');
+  function show(){
+    if(done) return;
+    wrap.classList.add('show');
+    p1.classList.add('show');
+    p2.classList.add('show');
   }
-  function hideNudge(){
-    closed = true;
-    nudge.style.opacity = '0';
-    nudge.style.transform = 'translateY(16px)';
-    ping.style.opacity = '0';
-    ping.style.animationName = 'none';
+  function hide(){
+    if(done) return;
+    done = true;
+    wrap.style.animation = 'none';
+    wrap.style.opacity   = '0';
+    wrap.style.transition= 'opacity 0.3s';
+    p1.style.display = p2.style.display = 'none';
   }
 
-  // Show after 3 seconds
-  setTimeout(showNudge, 3000);
-  // Auto-hide after 15 seconds
-  setTimeout(function(){ if(!closed) hideNudge(); }, 15000);
+  setTimeout(show, 2500);
+  setTimeout(function(){ if(!done) hide(); }, 18000);
 
-  // Close button
-  document.getElementById('chat-nudge-close').addEventListener('click', function(e){
-    e.stopPropagation();
-    hideNudge();
+  document.getElementById('solvea-close').addEventListener('click', function(e){
+    e.stopPropagation(); hide();
   });
-
-  // Click bubble → open chatbot (trigger click on solvea widget)
-  document.getElementById('chat-bubble').addEventListener('click', function(){
-    hideNudge();
-    // Try to find and click the Solvea chat button
-    var btn = document.querySelector('[id*="solvea"], [class*="solvea"], [id*="livechat"], iframe');
-    if(btn) btn.click();
+  document.getElementById('solvea-bubble').addEventListener('click', function(){
+    hide();
+    // Try clicking the Solvea widget launcher
+    var targets = [
+      document.querySelector('iframe[src*="solvea"]'),
+      document.querySelector('[id*="solvea"]'),
+      document.querySelector('[class*="solvea"]'),
+      document.querySelector('[id*="livechat"]'),
+      document.querySelector('[class*="livechat"]'),
+    ];
+    for(var i=0;i<targets.length;i++){
+      if(targets[i]){ targets[i].click(); break; }
+    }
   });
-
-  // Hide nudge when user scrolls or interacts significantly
-  document.addEventListener('scroll', function(){
-    if(!closed && window.scrollY > 200) hideNudge();
-  }, { once: true });
 })();
 </script>
 
