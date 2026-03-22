@@ -707,6 +707,142 @@ function trackCall(source) {
 }
 </script>
 
+<!-- ── CHATBOT ATTENTION GRABBER ── -->
+<div id="chat-nudge" style="
+  position:fixed;
+  bottom:28px;
+  right:90px;
+  z-index:10000;
+  display:flex;
+  align-items:flex-end;
+  gap:10px;
+  opacity:0;
+  transform:translateY(16px);
+  transition:opacity 0.5s ease, transform 0.5s ease;
+  pointer-events:none;
+">
+  <!-- speech bubble -->
+  <div id="chat-bubble" style="
+    background:#fff;
+    border-radius:18px 18px 4px 18px;
+    padding:14px 18px;
+    box-shadow:0 8px 32px rgba(0,0,0,0.18);
+    max-width:220px;
+    font-size:14px;
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    line-height:1.4;
+    color:#1a1a1a;
+    cursor:pointer;
+    pointer-events:all;
+    border:2px solid #CC0000;
+    position:relative;
+  ">
+    <div style="font-size:11px;font-weight:700;color:#CC0000;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px">💬 AI Assistant</div>
+    👋 Hi! Need to schedule a service or have a quick question? I'm here 24/7 — just tap to chat!
+    <!-- tail -->
+    <div style="
+      position:absolute;
+      bottom:-12px;
+      right:16px;
+      width:0;height:0;
+      border-left:10px solid transparent;
+      border-right:0px solid transparent;
+      border-top:12px solid #CC0000;
+    "></div>
+    <!-- close btn -->
+    <div id="chat-nudge-close" style="
+      position:absolute;top:-8px;right:-8px;
+      width:20px;height:20px;
+      background:#888;color:#fff;
+      border-radius:50%;
+      font-size:11px;line-height:20px;text-align:center;
+      cursor:pointer;font-weight:700;
+    ">✕</div>
+  </div>
+</div>
+
+<!-- ping ring around chatbot button area -->
+<div id="chat-ping" style="
+  position:fixed;
+  bottom:14px;
+  right:14px;
+  width:62px;height:62px;
+  border-radius:50%;
+  border:3px solid #CC0000;
+  z-index:9998;
+  opacity:0;
+  pointer-events:none;
+  animation:none;
+"></div>
+
+<style>
+@keyframes chat-ping-ring {
+  0%   { transform:scale(1);   opacity:0.9; }
+  80%  { transform:scale(1.9); opacity:0; }
+  100% { transform:scale(1.9); opacity:0; }
+}
+@keyframes chat-bubble-bounce {
+  0%,100% { transform:translateY(0); }
+  40%      { transform:translateY(-6px); }
+}
+#chat-nudge.visible {
+  opacity:1 !important;
+  transform:translateY(0) !important;
+}
+#chat-nudge.visible #chat-bubble {
+  animation: chat-bubble-bounce 2.4s ease-in-out 1s 3;
+}
+#chat-ping.visible {
+  opacity:1 !important;
+  animation: chat-ping-ring 1.8s ease-out infinite !important;
+}
+</style>
+
+<script>
+(function(){
+  var nudge  = document.getElementById('chat-nudge');
+  var ping   = document.getElementById('chat-ping');
+  var closed = false;
+
+  function showNudge(){
+    if(closed) return;
+    nudge.classList.add('visible');
+    ping.classList.add('visible');
+  }
+  function hideNudge(){
+    closed = true;
+    nudge.style.opacity = '0';
+    nudge.style.transform = 'translateY(16px)';
+    ping.style.opacity = '0';
+    ping.style.animationName = 'none';
+  }
+
+  // Show after 3 seconds
+  setTimeout(showNudge, 3000);
+  // Auto-hide after 15 seconds
+  setTimeout(function(){ if(!closed) hideNudge(); }, 15000);
+
+  // Close button
+  document.getElementById('chat-nudge-close').addEventListener('click', function(e){
+    e.stopPropagation();
+    hideNudge();
+  });
+
+  // Click bubble → open chatbot (trigger click on solvea widget)
+  document.getElementById('chat-bubble').addEventListener('click', function(){
+    hideNudge();
+    // Try to find and click the Solvea chat button
+    var btn = document.querySelector('[id*="solvea"], [class*="solvea"], [id*="livechat"], iframe');
+    if(btn) btn.click();
+  });
+
+  // Hide nudge when user scrolls or interacts significantly
+  document.addEventListener('scroll', function(){
+    if(!closed && window.scrollY > 200) hideNudge();
+  }, { once: true });
+})();
+</script>
+
 <!-- ── SOLVEA CHATBOT ── -->
 <script>
   !(function(){
